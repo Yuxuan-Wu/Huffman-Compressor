@@ -82,14 +82,15 @@ function decompressFile(path) {
     }
     encodedMsg += appendZero(decimalToBinary(binaryUint8[binaryUint8.length - 2]), zerosToFill);
 
-    //decode and write each character into the decompressed file
+    //decode and write to the decompressed file
     let decodeStream = new bitStream(encodedMsg);
     let decodedMsg = "";
     for (var i = 0; i < charCount; i++) {
         decodedMsg += HFtree.decode(decodeStream);
     }
 
-    console.log(decodedMsg);
+    let directoryPath = path.slice(0, path.lastIndexOf("\\"));
+    storeFile("decompressed@" + Date.now(), directoryPath, decodedMsg);
 }
 
 function compressFile(path) {
@@ -117,8 +118,6 @@ function compressFile(path) {
         for (var i = 0; i < data.length; i++) {
             encodedMsg += HFtree.encode(data.charAt(i));
         }
-
-        console.log(encodedMsg);
 
         writeMsg(writeStream, encodedMsg);
     });
@@ -292,7 +291,6 @@ function writeMsg(stream, encodedMsg) {
 
     //find out how many zeros to fill for the last chunk of binary data
     //write the number to the end of the file
-    console.log(lastChunk)
     data = new Uint8Array(1);
     data[0] = hiddenZeros(lastChunk);
     stream.write(Buffer.from(data.buffer));
