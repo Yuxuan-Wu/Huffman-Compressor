@@ -7,7 +7,7 @@ Huffman-Compressor is an compression tool application made with the ElectronJS f
 
 
 ## Usage
-# returns 'words'
+### returns 'words'
 ![Alt text](./src/images/image1.png?raw=true)
 ![Alt text](./src/images/image2.png?raw=true)
 ![Alt text](./src/images/image3.png?raw=true)
