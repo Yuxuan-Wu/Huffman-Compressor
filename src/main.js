@@ -13,6 +13,7 @@ var decimalToBinary = baseConverter(10, 2);
 //HTML elements
 const compressBtn = document.querySelector("#compressBtn");
 const decompressBtn = document.querySelector("#decompressBtn");
+const output = document.querySelector("output");
 var frequencyList = [];
 
 /**
@@ -89,8 +90,16 @@ function decompressFile(path) {
         decodedMsg += HFtree.decode(decodeStream);
     }
 
+    console.log(decodedMsg);
+
     let directoryPath = path.slice(0, path.lastIndexOf("\\"));
-    storeFile("decompressed@" + Date.now(), directoryPath, decodedMsg);
+    let writeStream = fileIO.createWriteStream(directoryPath + "\\"
+        + "decompressed@" + Date.now() + ".txt");
+    writeText(writeStream, decodedMsg);
+
+    //Indicate the decompression is complete
+    output.innerText = "Decompression completed";
+    output.style.backgroundColor = "green";
 }
 
 function compressFile(path) {
@@ -120,13 +129,11 @@ function compressFile(path) {
         }
 
         writeMsg(writeStream, encodedMsg);
+
+        //Indicate the compression is complete
+        output.innerText = "Compression completed";
+        output.style.backgroundColor = "green";
     });
-}
-
-function storeFile(fname, dir, content) {
-    let buffer = Buffer.from(content.buffer);
-
-    fileIO.createWriteStream(dir + "\\" + fname).write(buffer);
 }
 
 /**
@@ -209,6 +216,8 @@ class huffmanTree {
                 break;
             }
         }
+
+        console.log(currNode.symbol);
 
         return currNode.symbol;
 
@@ -296,6 +305,12 @@ function writeMsg(stream, encodedMsg) {
     stream.write(Buffer.from(data.buffer));
 }
 
+function writeText(stream, msg) {
+    for (var i = 0; i < msg.length; i++) {
+        stream.write(msg.charAt(i));
+    }
+}
+
 function hiddenZeros(binary) {
     let compared = decimalToBinary(binaryToDecimal(binary));
     return binary.length - compared.length;
@@ -314,32 +329,3 @@ function appendZero(binary, num) {
         return binary;
     }
 }
-
-/*
-function generateMsg(encodedMsg) {
-    let msg = [];
-
-    let inputStream = new bitStream(encodedMsg);
-    let currChunk = inputStream.readBytes(2);
-
-    do {
-        msg.push(parseInt(binaryToDecimal(currChunk)));
-        currChunk = inputStream.readBytes(2);
-    } while (currChunk !== "");
-
-    return new Uint16Array(msg);
-}
-*/
-
-function concatenateUint16Arrays(a1, a2) {
-    let resultArray = new Uint16Array(a1.length + a2.length);
-    for (var i = 0; i < a1.length; i++) {
-        resultArray[i] = a1[i];
-    }
-    for (var i = 0; i < a2.length; i++) {
-        resultArray[a1.length + i] = a2[i];
-    }
-
-    return resultArray;
-}
-

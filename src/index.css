@@ -1,7 +1,27 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif;
-  padding: 0;
-  margin: 0;
+  margin: 2rem;
   padding: 2rem;
+  text-align: center;
+  justify-items: center;
+}
+
+button {
+  margin-top: 3rem;
+  margin: 2rem;
+}
+
+output {
+  margin: 1rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  display: block;
+  background-color: grey;
+  color: white;
+}
+
+footer {
+  padding: 2rem;
+  position: relative;
 }
