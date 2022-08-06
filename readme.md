@@ -4,7 +4,11 @@ Huffman-Compressor is an compression tool application made with the ElectronJS f
 
 ## Installation
 
-
+```bash
+cd /root/directory/of/project/folder
+npm install electron-forge
+npm run make
+```
 
 ## Usage
 
